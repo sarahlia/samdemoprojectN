@@ -42,6 +42,6 @@ public class ProductController {
         Product productToAdd = new Product(name, description, price, image);
         Product productInDB = productDao.save(productToAdd);
 
-        return "redirect:/product/" + productInDB.getId();
+        return "redirect:/products";
     }
 }
