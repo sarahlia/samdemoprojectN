@@ -5,6 +5,7 @@ import com.example.samdemoproject.models.Product;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -43,5 +44,12 @@ public class ProductController {
         Product productInDB = productDao.save(productToAdd);
 
         return "redirect:/products";
+    }
+
+    @GetMapping("/product/{id}")
+    public String viewAProduct(@PathVariable long id, Model model) {
+        Product productToView = productDao.getOne(id);
+        model.addAttribute("product", productToView);
+        return "product/one";
     }
 }
