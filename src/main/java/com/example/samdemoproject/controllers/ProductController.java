@@ -43,7 +43,7 @@ public class ProductController {
         Product productToAdd = new Product(name, description, price, image);
         Product productInDB = productDao.save(productToAdd);
 
-        return "redirect:/products";
+        return "redirect:/product/" + productInDB.getId();
     }
 
     @GetMapping("/product/{id}")
