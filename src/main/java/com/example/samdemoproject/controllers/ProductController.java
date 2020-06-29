@@ -81,4 +81,17 @@ public class ProductController {
         productDao.save(productToEdit);
         return "redirect:/product/" + id;
     }
+
+    @GetMapping("/product/{id}/delete")
+    public String showDeleteForm(@PathVariable long id, Model model) {
+        Product productToDelete = productDao.getOne(id);
+        model.addAttribute("product", productToDelete);
+        return "product/delete";
+    }
+
+    @PostMapping("/product/{id}/delete")
+    public String destroy(@PathVariable long id) {
+        productDao.deleteById(id);
+        return "redirect:/products";
+    }
 }
