@@ -52,4 +52,33 @@ public class ProductController {
         model.addAttribute("product", productToView);
         return "product/one";
     }
+
+    @GetMapping("/product/{id}/edit")
+    public String showEditForm(@PathVariable long id, Model model) {
+        Product productToEdit = productDao.getOne(id);
+        model.addAttribute("product", productToEdit);
+        return "product/edit";
+    }
+
+    @PostMapping("/product/{id}/edit")
+    public String updateForm(
+        @PathVariable long id,
+        @RequestParam(name = "name") String name,
+        @RequestParam(name = "description") String description,
+        @RequestParam(name = "price") double price,
+        @RequestParam(name = "image") String image
+    ) {
+        //find a product (select * from products where id = ?)
+        Product productToEdit = productDao.getOne(id);
+
+        //edit the product
+        productToEdit.setName(name);
+        productToEdit.setDescription(description);
+        productToEdit.setPrice(price);
+        productToEdit.setImg(image);
+
+        //save the changes
+        productDao.save(productToEdit);
+        return "redirect:/product/" + id;
+    }
 }
