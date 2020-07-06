@@ -16,6 +16,9 @@ public class Product {
     @Column(columnDefinition = "TEXT")
     private String description;
 
+    @OneToOne
+    private User user;
+
     @Column
     private double price;
 
@@ -26,7 +29,7 @@ public class Product {
     public Product() {
 
     }
-
+    //create--old
     public Product(String name, String description, double price, String img) {
         this.name = name;
         this.description = description;
@@ -34,12 +37,49 @@ public class Product {
         this.img = img;
     }
 
+    //create--the minimum
+    public Product(String name, String description, double price, User user) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.user = user;
+    }
+
+    //create
+    public Product(String name, String description, double price, String img, User user) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.img = img;
+        this.user = user;
+    }
+
+    //read--old
     public Product(long id, String name, String description, double price, String img) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
         this.img = img;
+    }
+
+    //read--the minimum
+    public Product(long id, String name, String description, double price, User user) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.user = user;
+    }
+
+    //read
+    public Product(long id, String name, String description, double price, String img, User user) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.img = img;
+        this.user = user;
     }
 
     public long getId() {
@@ -80,5 +120,13 @@ public class Product {
 
     public void setImg(String img) {
         this.img = img;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

@@ -2,12 +2,11 @@ package com.example.samdemoproject.controllers;
 
 import com.example.samdemoproject.daos.ProductRepository;
 import com.example.samdemoproject.models.Product;
+import com.example.samdemoproject.models.User;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,20 +28,17 @@ public class ProductController {
     }
 
     @GetMapping("/product/create")
-    public String showCreateForm() {
+    public String showCreateForm(Model model) {
+        model.addAttribute("product", new Product());
         return "product/create";
     }
 
     @PostMapping("/product/create")
-    public String saveCreateForm(
-         @RequestParam(name = "name") String name,
-         @RequestParam(name = "description") String description,
-         @RequestParam(name = "price") double price,
-         @RequestParam(name = "image") String image
-    ) {
-        Product productToAdd = new Product(name, description, price, image);
+    public String saveCreateForm(@ModelAttribute Product productToAdd) {
+        User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        productToAdd.setUser(currentUser);
         Product productInDB = productDao.save(productToAdd);
-
+        //add emailService later
         return "redirect:/product/" + productInDB.getId();
     }
 
