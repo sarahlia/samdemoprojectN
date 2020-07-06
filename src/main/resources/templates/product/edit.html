@@ -11,21 +11,24 @@
 <h1>Edit Product</h1>
 
 <div class="container">
-	<form th:action="@{'/product/' + ${product.id} + '/edit'}" th:method="POST">
+	<form th:action="@{'/product/' + ${product.id} + '/edit'}" th:method="POST" th:object="${product}">
 		<label for="name">Product Name</label>
-		<input type="text" id="name" name="name" th:value="${product.name}" >
+		<input type="text" id="name" name="name" th:field="*{name}" >
 
 		<label for="description">Description</label>
-		<input type="text" id="description" name="description" th:value="${product.description}">
+		<input type="text" id="description" name="description" th:field="*{description}">
 
 		<label for="price">Price</label>
-		<input type="text" id="price" name="price" th:value="${product.price}">
+		<input type="text" id="price" name="price" th:field="*{price}">
 
 		<label for="image">Image</label>
-		<input type="url" id="image" name="image" th:value="${product.img}">
+		<input type="url" id="image" name="image" th:field="*{img}">
 
 		<input type="submit" value="Edit Product">
+	</form>
 
+	<form th:action="@{'/product/' + ${id} + '/delete'}" th:method="POST">
+		<input type="submit" value="Delete">
 	</form>
 
 </div>

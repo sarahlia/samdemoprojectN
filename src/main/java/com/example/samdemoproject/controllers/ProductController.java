@@ -1,13 +1,13 @@
 package com.example.samdemoproject.controllers;
 
 import com.example.samdemoproject.daos.ProductRepository;
+import com.example.samdemoproject.daos.UserRepository;
 import com.example.samdemoproject.models.Product;
+import com.example.samdemoproject.models.User;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -16,9 +16,11 @@ public class ProductController {
 
     //dependency injection
     private ProductRepository productDao;
+    private UserRepository userDao;
 
-    public ProductController(ProductRepository productDao) {
+    public ProductController(ProductRepository productDao, UserRepository userDao) {
         this.productDao = productDao;
+        this.userDao = userDao;
     }
 
     @GetMapping("/products")
@@ -29,20 +31,17 @@ public class ProductController {
     }
 
     @GetMapping("/product/create")
-    public String showCreateForm() {
+    public String showCreateForm(Model model) {
+        model.addAttribute("product", new Product());
         return "product/create";
     }
 
     @PostMapping("/product/create")
-    public String saveCreateForm(
-         @RequestParam(name = "name") String name,
-         @RequestParam(name = "description") String description,
-         @RequestParam(name = "price") double price,
-         @RequestParam(name = "image") String image
-    ) {
-        Product productToAdd = new Product(name, description, price, image);
+    public String saveCreateForm(@ModelAttribute Product productToAdd) {
+        User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        productToAdd.setUser(currentUser);
         Product productInDB = productDao.save(productToAdd);
-
+        //add emailService later
         return "redirect:/product/" + productInDB.getId();
     }
 
@@ -61,33 +60,27 @@ public class ProductController {
     }
 
     @PostMapping("/product/{id}/edit")
-    public String updateForm(
-        @PathVariable long id,
-        @RequestParam(name = "name") String name,
-        @RequestParam(name = "description") String description,
-        @RequestParam(name = "price") double price,
-        @RequestParam(name = "image") String image
-    ) {
-        //find a product (select * from products where id = ?)
-        Product productToEdit = productDao.getOne(id);
+    public String updateForm(@ModelAttribute Product productToEdit) {
+        User currentUser = userDao.getOne(1L);
+        productToEdit.setUser(currentUser);
 
         //edit the product
-        productToEdit.setName(name);
-        productToEdit.setDescription(description);
-        productToEdit.setPrice(price);
-        productToEdit.setImg(image);
+//        productToEdit.setName(name);
+//        productToEdit.setDescription(description);
+//        productToEdit.setPrice(price);
+//        productToEdit.setImg(image);
 
         //save the changes
         productDao.save(productToEdit);
-        return "redirect:/product/" + id;
+        return "redirect:/product/" + productToEdit.getId();
     }
 
-    @GetMapping("/product/{id}/delete")
-    public String showDeleteForm(@PathVariable long id, Model model) {
-        Product productToDelete = productDao.getOne(id);
-        model.addAttribute("product", productToDelete);
-        return "product/delete";
-    }
+//    @GetMapping("/product/{id}/delete")
+//    public String showDeleteForm(@PathVariable long id, Model model) {
+//        Product productToDelete = productDao.getOne(id);
+//        model.addAttribute("product", productToDelete);
+//        return "product/delete";
+//    }
 
     @PostMapping("/product/{id}/delete")
     public String destroy(@PathVariable long id) {
