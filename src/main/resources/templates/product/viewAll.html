@@ -1,23 +1,40 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.thymeleaf.org">-->
+<!--<head th:replace="fragments/head :: head('All Products')">-->
+<!--	<meta charset="UTF-8">-->
+<!--	<title>Title</title>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--	<nav th:replace="fragments/navbar :: navbar" />-->
+
+<!--	<h2>Here are all the products:</h2>-->
+
+<!--	<div class="container">-->
+<!--		<div th:each="product : ${products}">-->
+<!--			<h3 th:text="${product.name}">Name</h3>-->
+<!--			<h5 th:text="${product.description}">Description</h5>-->
+<!--			<h6 th:text="${product.price.#numbers.formatDecimal(product.price,1,2)}">Price</h6>-->
+<!--			<img th:src="${product.img}">-->
+<!--		</div>-->
+<!--	</div>-->
+
+<!--</body>-->
+<!--</html>-->
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/head :: head('All Products')">
-	<meta charset="UTF-8">
-	<title>Title</title>
+	<meta charset="UTF-8"/>
+	<title>View all Products using AJAX</title>
 </head>
 <body>
-
-	<nav th:replace="fragments/navbar :: navbar" />
-
-	<h2>Here are all the products:</h2>
-
-	<div class="container">
-		<div th:each="product : ${products}">
-			<h3 th:text="${product.name}">Name</h3>
-			<h5 th:text="${product.description}">Description</h5>
-			<h6 th:text="${product.price.#numbers.formatDecimal(product.price,1,2)}">Price</h6>
-			<img th:src="${product.img}">
-		</div>
-	</div>
-
+<h1>Products</h1>
+<div id="products"></div>
+<script
+		src="https://code.jquery.com/jquery-3.1.1.min.js"
+		integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+		crossorigin="anonymous">
+</script>
+<script src="base.js"></script>
 </body>
 </html>

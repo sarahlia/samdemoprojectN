@@ -23,6 +23,11 @@ public class ProductController {
         this.userDao = userDao;
     }
 
+    @GetMapping("/products.json")
+    public @ResponseBody List<Product> viewProductsInJSON() {
+        return productDao.findAll();
+    }
+
     @GetMapping("/products")
     public String viewAllProducts(Model model) {
         List<Product> products = productDao.findAll();
@@ -61,7 +66,7 @@ public class ProductController {
 
     @PostMapping("/product/{id}/edit")
     public String updateForm(@ModelAttribute Product productToEdit) {
-        User currentUser = userDao.getOne(1L);
+        User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         productToEdit.setUser(currentUser);
 
         //edit the product

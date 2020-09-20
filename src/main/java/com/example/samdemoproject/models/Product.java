@@ -1,5 +1,7 @@
 package com.example.samdemoproject.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 
 @Entity
@@ -16,14 +18,19 @@ public class Product {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @OneToOne
-    private User user;
+//    @OneToOne
+//    private User user;
 
     @Column
     private double price;
 
     @Column(columnDefinition = "TEXT")
     private String img;
+
+    @ManyToOne
+    @JsonManagedReference
+    @JoinColumn(name = "user_id")
+    private User user;
 
     //empty constructor
     public Product() {
